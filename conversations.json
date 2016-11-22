@@ -1,0 +1,38 @@
+{
+    "start" : ["Hi %s! My name is LeckerBot. \n I'm here to help you to find good food recipes.\nFirst of all, what's your diet ?",
+               "Hey %s! You look a bit hungry. If you don't know what to cook let me help you.\nFirst of all, what's your diet ?",
+               "Hello %s! Cooking is better than eating outside, right ? Let me help you.\nFirst of all, what's your diet ?"],
+
+    "diet" : ["Well noted %s !\n Which meal are you going to cook for ? e.g Dinner, Afternoon Tea",
+              "Got it!\nFor what meal this is going to be for %s ? e.g Breakfast, Afternoon Tea",
+              "Understood!\n%s, what meal is this for ? e.g Lunch, Snacks "],
+
+    "think" : ["Allright, I think I have something yummy for you %s !",
+               "%s, I think you might like this !",
+               "Aha, I cook this a lot %s, maybe you like this too ?"],
+
+    "enjoy" : ["Aha! Knew that you'd like this, %s",
+               "Haha I'm the best for inspirations right ?, Enjoy %s !",
+               "Well, Bon apetito!, %s ! See you next time."],
+
+    "problem": ["Oops! Looks like there is a problem. Could you please try again later ?",
+                "Ehm... Cannot really think right now, Can you ask me later please ?",
+                "Well, Super busy right now to solve this technical problem. Later ?"],
+
+    "excuse": ["No problem!, What about this ?",
+               "Ah you like to be inspired huh... This one ?",
+               "Hmm, let me think again... What do you think about this one ?"],
+
+    "yesNo": ["So, Yes or No ?",
+              "Your kind of style, or one-more ?",
+              "Wanna cook that one or one more inspiration round ?"],
+
+    "notMore": ["Well, I'm out of inspirations... \nBut you can poke me again by sending /start ! ",
+                "Still couldn't find anything ? \n Sorry but I have a life here...\nYou can send /start to start again.",
+                "Wow you're a picky one, but I'm out for now.\n Start again by sending /start to me..."],
+
+    "gifs": ["https://media.tenor.co/images/10e0e2c48981448fe1cdbd1b566c8eaa/raw",
+             "http://cdn.smosh.com/sites/default/files/ftpuploads/bloguploads/nom-funny-cookie-monster.gif",
+             "https://media.giphy.com/media/5m4wkZs8RVh2U/giphy.gif",
+             "https://media.tenor.co/images/10e0e2c48981448fe1cdbd1b566c8eaa/raw"]
+}
