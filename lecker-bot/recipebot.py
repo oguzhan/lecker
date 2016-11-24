@@ -108,7 +108,11 @@ def next_recipe(bot, update):
                         reply_markup=ReplyKeyboardHide())
 
         bot.sendMessage(update.message.chat_id,
+                        text='To start the conversation again, simply click on /start. \n and please send your feedback to oguzhan@oyayla.com')
+
+        bot.sendMessage(update.message.chat_id,
                         conversations['gifs'][(randint(0,2))])
+
 
         return ConversationHandler.END
 
