@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# encoding=utf8
 # Simple Bot to reply to Telegram messages to recommend food recipes
 # According to users' diet.
 
@@ -9,7 +11,8 @@ import logging
 import requests
 import time
 import json
-
+import random
+from emoji import emojize
 from random import randint
 
 # Enable logging
@@ -29,14 +32,12 @@ with open('conversations.json') as data_file:
     conversations = json.load(data_file)
 
 
-
 def start(bot, update):
- 
+
     reply_keyboard = [ ['Normal'], ['Glutenfree'],['Vegetarian'], ['Vegan']]
     user = update.message.from_user
-
     bot.sendMessage(update.message.chat_id,
-                    text=conversations['start'][randint(0,2)] % user.first_name,
+                    text=emojize(conversations['start'][randint(0,2)] % user.first_name, use_aliases=True),
                     reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
     return DIET
 
@@ -63,12 +64,14 @@ def skip_diet(bot, update):
 
 
 def meal(bot, update):
+    reply_markup = ReplyKeyboardHide()
     reply_keyboard = [['Yes', 'One more !']]
     user = update.message.from_user
     logger.info("Meal that %s wants is %s" % (user.first_name, update.message.text))
     preferences['meal'] = update.message.text
     bot.sendMessage(update.message.chat_id,
-                    text=conversations['think'][randint(0,2)] % user.first_name)
+                    text=conversations['think'][randint(0,2)] % user.first_name,
+                    reply_markup=reply_markup)
 
     # Retrieve recipe from Pinterest.
     try:
@@ -97,29 +100,29 @@ def skip_meal(bot, update):
 
 
 def next_recipe(bot, update):
-
     user = update.message.from_user
     reply_keyboard = [['Yes', 'One more !']]
 
     if update.message.text == 'Yes':
-
+        reply_markup = ReplyKeyboardHide()
         bot.sendMessage(update.message.chat_id,
                         text=conversations['enjoy'][randint(0,2)] % user.first_name,
-                        reply_markup=ReplyKeyboardHide())
+                        reply_markup=reply_markup)
 
         bot.sendMessage(update.message.chat_id,
-                        text='To start the conversation again, simply click on /start. \n and please send your feedback to oguzhan@oyayla.com')
+                        text='To start the conversation again, simply click on /start.')
 
-        bot.sendMessage(update.message.chat_id,
-                        conversations['gifs'][(randint(0,2))])
+        gif = str(conversations['gifs'][(randint(0,2))])
+        bot.sendDocument(chat_id=update.message.chat_id, document=gif)
 
 
         return ConversationHandler.END
 
-    if  len(sent_recipes) > limit_of_recipes-1:
 
+    if len(sent_recipes) > limit_of_recipes-1:
+        reply_markup = ReplyKeyboardHide()
         bot.sendMessage(update.message.chat_id,
-                        conversations['notMore'][(randint(0,2))])
+                        conversations['notMore'][(randint(0,2))], reply_markup=reply_markup)
         del sent_recipes[:]
         return ConversationHandler.END
 
@@ -147,7 +150,8 @@ def next_recipe(bot, update):
 def get_recipe(preferences):
     query = str(preferences['diet'] + " " + preferences['meal'] + " Food Recipe")
     recipes = pinterest.search(query)
-    return recipes[randint(0, len(recipes) - 1)]['link']
+    recipe = random.choice(recipes)['link']
+    return recipe
 
 
 def cancel(bot, update):

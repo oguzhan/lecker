@@ -1,9 +1,9 @@
 {
-    "start" : ["Hi %s! My name is LeckerBot. \n I'm here to help you to find good food recipes.\nFirst of all, what's your diet ?",
-               "Hey %s! You look a bit hungry. If you don't know what to cook let me help you.\nFirst of all, what's your diet ?",
-               "Hello %s! Cooking is better than eating outside, right ? Let me help you.\nFirst of all, what's your diet ?"],
+    "start" : [":santa: Hi %s! My name is LeckerBot. \nI'm here to help you to find good food recipes.\nFirst of all, what's your diet ?",
+               ":christmas_tree: Hey %s! You look a bit hungry. If you don't know what to cook let me help you.\nFirst of all, what's your diet ?",
+               ":santa: :christmas_tree: Hello %s! Cooking is better than eating outside, right ? Let me help you.\nFirst of all, what's your diet ?"],
 
-    "diet" : ["Well noted %s !\n Which meal are you going to cook for ? e.g Dinner, Afternoon Tea",
+    "diet" : ["Well noted %s !\nWhich meal are you going to cook for ? e.g Dinner, Afternoon Tea",
               "Got it!\nFor what meal this is going to be for %s ? e.g Breakfast, Afternoon Tea",
               "Understood!\n%s, what meal is this for ? e.g Lunch, Snacks "],
 
@@ -27,12 +27,13 @@
               "Your kind of style, or one-more ?",
               "Wanna cook that one or one more inspiration round ?"],
 
-    "notMore": ["Well, I'm out of inspirations... \nBut you can poke me again by sending /start ! \nplease send your feedback to oguzhan@oyayla.com",
-                "Still couldn't find anything ? \n Sorry but I have a life here...\nYou can send /start to start again.\nand please send your feedback to oguzhan@oyayla.com",
-                "Wow you're a picky one, but I'm out for now.\n Start again by sending /start to me...\nand please send your feedback to oguzhan@oyayla.com"],
+    "notMore": ["Well, I'm out of inspirations... \nBut you can poke me again by sending /start !",
+                "Still couldn't find anything ? \nSorry but I have a life here...\nYou can send /start to start again.",
+                "Wow you're a picky one, but I'm out for now.\nStart again by sending /start to me..."],
 
-    "gifs": ["https://media.tenor.co/images/10e0e2c48981448fe1cdbd1b566c8eaa/raw",
-             "http://cdn.smosh.com/sites/default/files/ftpuploads/bloguploads/nom-funny-cookie-monster.gif",
+    "gifs": ["https://media.giphy.com/media/xUPOqhF3VQhkRl4cYU/giphy.gif",
+             "https://media.giphy.com/media/3o8doMOU0oVDYSHAaY/giphy.gif",
+             "https://media.giphy.com/media/10zMxXd83weK6A/giphy.gif",
              "https://media.giphy.com/media/5m4wkZs8RVh2U/giphy.gif",
              "https://media.tenor.co/images/10e0e2c48981448fe1cdbd1b566c8eaa/raw"]
 }
