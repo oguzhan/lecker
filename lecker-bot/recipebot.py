@@ -7,6 +7,7 @@ from telegram import (ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardB
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, RegexHandler,
                           ConversationHandler)
 from pinterest_api_client import Pinterest
+import csv
 import logging
 import requests
 import time
@@ -21,9 +22,12 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
-preferences = {}
-DIET, MEAL, NEXT = range(3)
+# Definition of each steps.
+NEED, DIET, MEAL, NEXT = range(4)
+
 pinterest = Pinterest()
+preferences = {}
+stats = {}
 limit_of_recipes = 3
 sent_recipes = []
 
@@ -34,12 +38,27 @@ with open('conversations.json') as data_file:
 
 def start(bot, update):
 
-    reply_keyboard = [ ['Normal'], ['Glutenfree'],['Vegetarian'], ['Vegan']]
+    reply_keyboard = [ ['Recipes'], ['Inspirations']] 
     user = update.message.from_user
     bot.sendMessage(update.message.chat_id,
-                    text=emojize(conversations['start'][randint(0,2)] % user.first_name, use_aliases=True),
+                    text="Hi %s! Are you looking for a specific recipe or some inspiration ?" % user.first_name,
                     reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
-    return DIET
+    return NEED
+
+def need(bot, update):
+    reply_markup = ReplyKeyboardHide()
+    user = update.message.from_user
+    if update.message.text == 'Recipes':
+        bot.sendMessage(update.message.chat_id,
+                        text="What'd you like to cook my dear %s ? (i.e Glutenfree Pizza)" % user.first_name, use_aliases=True)
+        preferences['diet'] = ''
+        return MEAL
+    else:
+        reply_keyboard = [ ['Normal'], ['Glutenfree'],['Vegetarian'], ['Vegan']]
+        bot.sendMessage(update.message.chat_id,
+                        text=emojize(conversations['start'][randint(0,2)] % user.first_name, use_aliases=True),
+                        reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
+        return DIET
 
 
 def diet(bot, update):
@@ -111,7 +130,7 @@ def next_recipe(bot, update):
 
         bot.sendMessage(update.message.chat_id,
                         text='To start the conversation again, simply click on /start.')
-
+        log_to_csv(update.message.chat_id, user, sent_recipes[0], preferences)
         gif = str(conversations['gifs'][(randint(0,2))])
         bot.sendDocument(chat_id=update.message.chat_id, document=gif)
 
@@ -148,10 +167,21 @@ def next_recipe(bot, update):
 
 
 def get_recipe(preferences):
-    query = str(preferences['diet'] + " " + preferences['meal'] + " Food Recipe")
+    query = str(preferences['diet'] + " " + preferences['meal'] + " Recipe")
     recipes = pinterest.search(query)
     recipe = random.choice(recipes)['link']
     return recipe
+
+def log_to_csv(chat_id, user, sent_recipe, preferences):
+    log_dict = {'id': chat_id, 'user': user.first_name,
+                'meal': preferences['meal'], 'diet': preferences['diet'],
+                'recipe': sent_recipe}
+
+    with open('logs.csv', 'w') as csv_logger:
+        fieldnames = ['id', 'user', 'meal', 'diet', 'recipe']
+        writer = csv.DictWriter(csv_logger, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerow(log_dict)
 
 
 def cancel(bot, update):
@@ -179,6 +209,7 @@ def main():
         entry_points=[CommandHandler('start', start)],
 
         states = {
+            NEED : [RegexHandler('^(Recipes|Inspirations)', need)],
             DIET : [RegexHandler('^(Glutenfree|Vegan|Vegetarian|Normal)', diet), CommandHandler('skip', skip_diet)],
             MEAL : [MessageHandler([Filters.text], meal), CommandHandler('skip', skip_meal)],
             NEXT : [RegexHandler('^(Yes|One more !)', next_recipe)],
