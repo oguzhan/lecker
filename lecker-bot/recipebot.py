@@ -177,10 +177,9 @@ def log_to_csv(chat_id, user, sent_recipe, preferences):
                 'meal': preferences['meal'], 'diet': preferences['diet'],
                 'recipe': sent_recipe}
 
-    with open('logs.csv', 'w') as csv_logger:
+    with open('logs.csv', 'a') as csv_logger:
         fieldnames = ['id', 'user', 'meal', 'diet', 'recipe']
         writer = csv.DictWriter(csv_logger, fieldnames=fieldnames)
-        writer.writeheader()
         writer.writerow(log_dict)
 
 
